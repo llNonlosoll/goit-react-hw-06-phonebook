@@ -2,9 +2,9 @@ import { Component } from 'react';
 import { nanoid } from 'nanoid';
 import ContactForm from './ContactFormComponent/ContactForm';
 import { Contacts } from './contactsList/contactsList';
-import { Filter } from './filter/filter';
+import { Filter } from './FilterComponent/Filter';
 
-import { AppContainer, AppTitle } from './App.styled';
+import { AppContainer, AppTitle, AppSecondaryTitle } from './App.styled';
 
 export class App extends Component {
   state = {
@@ -63,7 +63,7 @@ export class App extends Component {
       <AppContainer>
         <AppTitle>PhoneBook</AppTitle>
         <ContactForm onSubmit={this.addContactToList} />
-        <h2>Contacts</h2>
+        <AppSecondaryTitle>Contacts</AppSecondaryTitle>
         {this.state.contacts.length > 0 ? (
           <Filter
             onFilterChange={this.filterValue}
