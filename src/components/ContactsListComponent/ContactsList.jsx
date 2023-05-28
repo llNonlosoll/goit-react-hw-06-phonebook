@@ -1,26 +1,34 @@
 import PropTypes from 'prop-types';
+import {
+  ContactsListList,
+  ContactsListItem,
+  ContactsListItemContainer,
+  ContactsListButton,
+} from './ContactsList.styled';
 
 // Список контактів
 export const Contacts = ({ contactsList, onContactRemove }) => (
-  <ul>
+  <ContactsListList>
     {contactsList.map(contact => (
-      <li key={contact.id}>
-        <p>{contact.name}</p>
-        <p>{contact.number}</p>
+      <ContactsListItem key={contact.id}>
+        <ContactsListItemContainer>
+          <p>{contact.name} :</p>
+          <p>{contact.number}</p>
+        </ContactsListItemContainer>
 
         {
           // Кнопка видалення контакту
-          <button
+          <ContactsListButton
             type="button"
             name="delete"
             onClick={() => onContactRemove(contact.id)}
           >
-            delete
-          </button>
+            Delete
+          </ContactsListButton>
         }
-      </li>
+      </ContactsListItem>
     ))}
-  </ul>
+  </ContactsListList>
 );
 
 Contacts.propTypes = {

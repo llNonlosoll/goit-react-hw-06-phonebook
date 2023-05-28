@@ -4,7 +4,12 @@ import ContactForm from './ContactFormComponent/ContactForm';
 import { Contacts } from './ContactsListComponent/ContactsList';
 import { Filter } from './FilterComponent/Filter';
 
-import { AppContainer, AppTitle, AppSecondaryTitle } from './App.styled';
+import {
+  AppContainer,
+  AppTitle,
+  AppSecondaryTitle,
+  EmptyText,
+} from './App.styled';
 
 export class App extends Component {
   state = {
@@ -70,12 +75,14 @@ export class App extends Component {
             value={this.state.filter}
           ></Filter>
         ) : (
-          <p>YOUR PHONEBOOK IS EMPTY</p>
+          <EmptyText>YOUR PHONEBOOK IS EMPTY</EmptyText>
         )}
-        <Contacts
-          contactsList={filteredContacts}
-          onContactRemove={this.removeContactFromList}
-        />
+        {this.state.contacts.length > 0 && (
+          <Contacts
+            contactsList={filteredContacts}
+            onContactRemove={this.removeContactFromList}
+          />
+        )}
       </AppContainer>
     );
   }

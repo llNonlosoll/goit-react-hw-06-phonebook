@@ -3,6 +3,11 @@ import styled from 'styled-components';
 export const ContactFormForm = styled.form`
   display: flex;
   flex-direction: column;
+
+  padding: 10px;
+
+  border: 1px solid #f5fc69;
+  border-radius: 4px;
 `;
 
 export const ContactFormLabel = styled.label`
