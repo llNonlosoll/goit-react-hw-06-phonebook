@@ -1,8 +1,10 @@
 import { Component } from 'react';
 import { nanoid } from 'nanoid';
-import ContactForm from './contactForm/contactForm';
+import ContactForm from './ContactFormComponent/ContactForm';
 import { Contacts } from './contactsList/contactsList';
 import { Filter } from './filter/filter';
+
+import { AppContainer, AppTitle } from './App.styled';
 
 export class App extends Component {
   state = {
@@ -58,8 +60,8 @@ export class App extends Component {
     const filteredContacts = this.filteredContacts();
 
     return (
-      <div>
-        <h1>PhoneBook</h1>
+      <AppContainer>
+        <AppTitle>PhoneBook</AppTitle>
         <ContactForm onSubmit={this.addContactToList} />
         <h2>Contacts</h2>
         {this.state.contacts.length > 0 ? (
@@ -74,7 +76,7 @@ export class App extends Component {
           contactsList={filteredContacts}
           onContactRemove={this.removeContactFromList}
         />
-      </div>
+      </AppContainer>
     );
   }
 }

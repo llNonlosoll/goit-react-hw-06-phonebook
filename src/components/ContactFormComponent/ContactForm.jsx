@@ -7,7 +7,7 @@ class ContactForm extends Component {
     number: '',
   };
 
-  // Унікальні ідентіфакатори для інпутів форми
+  // ID для інпутів форми
   nameId = nanoid();
   numberId = nanoid();
 
@@ -15,7 +15,7 @@ class ContactForm extends Component {
   handleSubmit = event => {
     event.preventDefault();
 
-    //Виклик функції onSubmit
+    //Виклик функції з props onSubmit
     this.props.onSubmit({ name: this.state.name, number: this.state.number });
 
     // Form reset
