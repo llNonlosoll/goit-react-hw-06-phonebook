@@ -11,6 +11,8 @@ import {
   EmptyText,
 } from './App.styled';
 
+const STORAGE_KEY = 'phone-book';
+
 export class App extends Component {
   state = {
     contacts: [
@@ -21,6 +23,21 @@ export class App extends Component {
     ],
     filter: '',
   };
+
+  componentDidUpdate(_, prevState) {
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.state.contacts));
+    }
+  }
+
+  componentDidMount() {
+    const contacts = localStorage.getItem(STORAGE_KEY);
+    const parsedContacts = JSON.parse(contacts);
+
+    if (parsedContacts) {
+      this.setState({ contacts: parsedContacts });
+    }
+  }
 
   // Додавання контакту
   addContactToList = contact => {
