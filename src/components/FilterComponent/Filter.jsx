@@ -1,8 +1,7 @@
-import PropTypes from 'prop-types';
 import { FilterContainer, FilterLabel, FilterInput } from './Filter.styled';
 
 // Фільтр контактів
-export const Filter = ({ value, onFilterChange }) => {
+export function Filter({ value, onFilterChange }) {
   return (
     <FilterContainer>
       <FilterLabel>
@@ -11,9 +10,4 @@ export const Filter = ({ value, onFilterChange }) => {
       </FilterLabel>
     </FilterContainer>
   );
-};
-
-Filter.propTypes = {
-  value: PropTypes.string.isRequired,
-  onFilterChange: PropTypes.func.isRequired,
-};
+}
