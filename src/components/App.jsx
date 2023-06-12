@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import { nanoid } from 'nanoid';
 import { ContactForm } from './ContactFormComponent/ContactForm';
 import { Contacts } from './ContactsListComponent/ContactsList';
@@ -13,35 +13,27 @@ import {
 
 const STORAGE_KEY = 'phone-book';
 
-export class App extends Component {
-  state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    ],
-    filter: '',
-  };
+const defaultContacts = [
+  { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+  { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+  { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+  { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+];
 
-  componentDidUpdate(_, prevState) {
-    if (this.state.contacts !== prevState.contacts) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.state.contacts));
-    }
-  }
+export function App() {
+  const [contacts, setContacts] = useState(() => {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY)) ?? defaultContacts;
+  });
+  const [filter, setFilter] = useState('');
 
-  componentDidMount() {
-    const contacts = localStorage.getItem(STORAGE_KEY);
-    const parsedContacts = JSON.parse(contacts);
-
-    if (parsedContacts) {
-      this.setState({ contacts: parsedContacts });
-    }
-  }
+  // ===componentDidUpdate
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(contacts));
+  }, [contacts]);
 
   // Додавання контакту
-  addContactToList = contact => {
-    const isInContacts = this.state.contacts.some(
+  const addContactToList = contact => {
+    const isInContacts = contacts.some(
       ({ name }) => name.toLowerCase() === contact.name.toLowerCase()
     );
 
@@ -49,58 +41,46 @@ export class App extends Component {
       alert(`${contact.name} is already in contacts`);
       return;
     }
-    this.setState(prevState => ({
-      contacts: [{ id: nanoid(), ...contact }, ...prevState.contacts],
-    }));
+
+    setContacts(prevContacts => [
+      { id: nanoid(), ...contact },
+      ...prevContacts,
+    ]);
   };
 
   // Видалення контакту
-  removeContactFromList = contactId => {
-    this.setState(prevState => {
-      return {
-        contacts: prevState.contacts.filter(({ id }) => id !== contactId),
-      };
-    });
+  const removeContactFromList = contactId => {
+    setContacts(prevContacts =>
+      prevContacts.filter(({ id }) => id !== contactId)
+    );
   };
 
   // Filter value
-  filterValue = event => {
-    this.setState({ filter: event.target.value });
+  const filterValue = event => {
+    setFilter(event.target.value);
   };
 
   // Фільтровані контакти
-  filteredContacts = () => {
-    const { filter, contacts } = this.state;
-    const lowerCaseFilter = filter.toLowerCase();
+  const filteredContacts = contacts.filter(({ name }) =>
+    name.toLowerCase().includes(filter.toLowerCase())
+  );
 
-    return contacts.filter(({ name }) =>
-      name.toLowerCase().includes(lowerCaseFilter)
-    );
-  };
-
-  render() {
-    const filteredContacts = this.filteredContacts();
-
-    return (
-      <AppContainer>
-        <AppTitle>PhoneBook</AppTitle>
-        <ContactForm onSubmit={this.addContactToList} />
-        <AppSecondaryTitle>Contacts</AppSecondaryTitle>
-        {this.state.contacts.length > 0 ? (
-          <Filter
-            onFilterChange={this.filterValue}
-            value={this.state.filter}
-          ></Filter>
-        ) : (
-          <EmptyText>YOUR PHONEBOOK IS EMPTY</EmptyText>
-        )}
-        {this.state.contacts.length > 0 && (
-          <Contacts
-            contactsList={filteredContacts}
-            onContactRemove={this.removeContactFromList}
-          />
-        )}
-      </AppContainer>
-    );
-  }
+  return (
+    <AppContainer>
+      <AppTitle>PhoneBook</AppTitle>
+      <ContactForm onSubmit={addContactToList} />
+      <AppSecondaryTitle>Contacts</AppSecondaryTitle>
+      {contacts.length > 0 ? (
+        <Filter onFilterChange={filterValue} value={filter}></Filter>
+      ) : (
+        <EmptyText>YOUR PHONEBOOK IS EMPTY</EmptyText>
+      )}
+      {contacts.length > 0 && (
+        <Contacts
+          contactsList={filteredContacts}
+          onContactRemove={removeContactFromList}
+        />
+      )}
+    </AppContainer>
+  );
 }

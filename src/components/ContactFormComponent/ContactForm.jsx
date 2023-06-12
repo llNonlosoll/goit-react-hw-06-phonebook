@@ -13,15 +13,15 @@ export function ContactForm({ onSubmit }) {
   const [number, setNumber] = useState('');
 
   // ID для інпутів форми
-  let nameId = nanoid();
-  let numberId = nanoid();
+  const nameId = nanoid();
+  const numberId = nanoid();
 
   // Опрацювання форми
   const handleSubmit = event => {
     event.preventDefault();
 
     //Виклик функції з props onSubmit
-    onSubmit({ name: name, number: number });
+    onSubmit({ name, number });
 
     // Form reset
     setName('');
