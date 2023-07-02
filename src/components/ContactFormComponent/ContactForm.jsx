@@ -1,7 +1,10 @@
+// Імпортуємо хуки useSelector, useDispatch
 import { useSelector, useDispatch } from 'react-redux';
+// Імпортуємо action
 import { addContact } from 'redux/contactsSlice';
+// Імпортуємо селектор
 import { getContacts } from 'redux/selectors';
-
+// Імпортуємо стилізовані компоненти
 import {
   ContactFormForm,
   ContactFormLabel,
@@ -11,24 +14,26 @@ import {
 
 export function ContactForm() {
   const dispatch = useDispatch();
+  // Отримуємо список контактів зі стану
   const contacts = useSelector(getContacts);
 
   // Опрацювання форми
   const handleSubmit = event => {
     event.preventDefault();
     const form = event.target;
-    // Додавання контакту
 
     const isInContacts = contacts.some(
       ({ name }) =>
         name.toLowerCase() === form.elements.name.value.toLowerCase()
     );
 
+    // Перевірка на наявність контакту в списку
     if (isInContacts) {
       alert(`${form.elements.name.value} is already in contacts`);
       return;
     }
 
+    // Додавання контакту
     dispatch(addContact(form.elements.name.value, form.elements.number.value));
     form.reset();
   };
@@ -39,6 +44,7 @@ export function ContactForm() {
         <ContactFormLabel htmlFor="name">
           Name
           <ContactFormInput
+            id="name"
             type="text"
             name="name"
             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -49,6 +55,7 @@ export function ContactForm() {
         <ContactFormLabel htmlFor="number">
           Number
           <ContactFormInput
+            id="number"
             type="tel"
             name="number"
             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
@@ -57,7 +64,6 @@ export function ContactForm() {
           />
         </ContactFormLabel>
       </div>
-
       <ContactFormButton type="submit">Add contact </ContactFormButton>
     </ContactFormForm>
   );

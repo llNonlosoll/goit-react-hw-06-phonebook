@@ -1,7 +1,10 @@
+// Імпортуємо хуки useSelector, useDispatch
 import { useSelector, useDispatch } from 'react-redux';
+// Імпортуємо action
 import { deleteContact } from 'redux/contactsSlice';
+// Імпортуємо селектори
 import { getContacts, getFilter } from 'redux/selectors';
-
+// Імпортуємо стилізовані компоненти
 import {
   ContactsListList,
   ContactsListItem,
@@ -11,7 +14,9 @@ import {
 
 // Список контактів
 export function Contacts() {
+  // Отримуємо список контактів зі стану
   const contacts = useSelector(getContacts);
+  // Отримуємо значення фільтру зі стану
   const filter = useSelector(getFilter);
 
   const dispatch = useDispatch();
@@ -21,9 +26,11 @@ export function Contacts() {
     name.toLowerCase().includes(filter.toLowerCase())
   );
 
+  // Видалення контакту
   const handleContactDelete = contactID => dispatch(deleteContact(contactID));
 
   return (
+    // Список контактів
     <ContactsListList>
       {filteredContacts.map(contact => (
         <ContactsListItem key={contact.id}>

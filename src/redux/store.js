@@ -1,6 +1,4 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { contactsReducer } from './contactsSlice';
-import { filterReducer } from './filterSlice';
 import {
   persistStore,
   FLUSH,
@@ -10,12 +8,19 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist';
+import { contactsReducer } from './contactsSlice';
+import { filterReducer } from './filterSlice';
 
+// Створення state за допомогою configureStore Redux
 export const store = configureStore({
   reducer: {
+    // Reducer для управління станом контактів
     contacts: contactsReducer,
+    // Reducer для управління станом фільтру
     filter: filterReducer,
   },
+  // Застосування middleware за допомогою getDefaultMiddleware
+  // для ігнорування окремих Actions
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
@@ -24,4 +29,5 @@ export const store = configureStore({
     }),
 });
 
+// Створення персистентного сховища === localStorage
 export const persistor = persistStore(store);
