@@ -1,5 +1,6 @@
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { addContact } from 'redux/contactsSlice';
+import { getContacts } from 'redux/selectors';
 
 import {
   ContactFormForm,
@@ -10,11 +11,24 @@ import {
 
 export function ContactForm() {
   const dispatch = useDispatch();
+  const contacts = useSelector(getContacts);
 
   // Опрацювання форми
   const handleSubmit = event => {
     event.preventDefault();
     const form = event.target;
+    // Додавання контакту
+
+    const isInContacts = contacts.some(
+      ({ name }) =>
+        name.toLowerCase() === form.elements.name.value.toLowerCase()
+    );
+
+    if (isInContacts) {
+      alert(`${form.elements.name.value} is already in contacts`);
+      return;
+    }
+
     dispatch(addContact(form.elements.name.value, form.elements.number.value));
     form.reset();
   };
